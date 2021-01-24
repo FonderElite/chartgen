@@ -7,6 +7,7 @@ import os
 import sys
 import requests
 import platform
+import math
 from bs4 import BeautifulSoup as soup
 from colorama import Fore
 import numpy as np
@@ -34,16 +35,22 @@ yl="\033[1;33m" #>Yellow#
 sys = platform.system()
 def banner():
     print(Fore.CYAN + '''
- ____  __ __     __  __ __   ____  ____  ______ 
-|    \|  T  T   /  ]|  T  T /    T|    \|      T
-|  o  )  |  |  /  / |  l  |Y  o  ||  D  )      | Generate Charts Using Matplotlib
-|   _/|  ~  | /  /  |  _  ||     ||    /l_j  l_j
-|  |  l___, |/   \_ |  |  ||  _  ||    \  |  |  
-|  |  |     !\     ||  |  ||  |  ||  .  Y |  |  
-l__j  l____/  \____jl__j__jl__j__jl__j\_j l__j  
-                                                                                
+  ███████████                      █████                           █████   
+░░███░░░░░███                    ░░███                           ░░███    
+ ░███    ░███ █████ ████  ██████  ░███████    ██████   ████████  ███████  
+ ░██████████ ░░███ ░███  ███░░███ ░███░░███  ░░░░░███ ░░███░░███░░░███░   
+ ░███░░░░░░   ░███ ░███ ░███ ░░░  ░███ ░███   ███████  ░███ ░░░   ░███    
+ ░███         ░███ ░███ ░███  ███ ░███ ░███  ███░░███  ░███       ░███ ███
+ █████        ░░███████ ░░██████  ████ █████░░████████ █████      ░░█████ 
+░░░░░          ░░░░░███  ░░░░░░  ░░░░ ░░░░░  ░░░░░░░░ ░░░░░        ░░░░░  
+               ███ ░███                                                                               
     ''')
 
+def random():
+  print(wi + yl + 'Bar=0, Line=1, scatter=2, pie=3')
+  commandhere = input("Choose Graph Type: ")
+  if commandhere == "0":
+    print('')
 
 def update():
   url = 'https://github.com/FonderElite/chartgen'
@@ -66,10 +73,12 @@ def help():
 +|-----------------------------------------|+
 +|      -h          Help                   |+
 +|      -c          chart                  |+
++|      -r          random                 |+
 +|      -s          Start                  |+
 +|      -u          Update                 |+
 +|      -q          Quit                   |+
 +|Ex.  ./chartgen  -c -s (Generate Chart)  |+
++|Ex.  ./chartgen -c -r -s (Random Chart)  |+
 +|=========================================|+
       ''')
 banner()
@@ -85,8 +94,8 @@ except Exception:
     print(Fore.CYAN + "Missing Modules.")
     os.system('pip install matplotlib')
 def chartgen():
-  graphs = ["bar","line","scatter","stem"]
-  print('Bar=0, Line=1','scatter=2,stem=3')
+  graphs = ["bar","line","scatter","pie"]
+  print('Bar=0, Line=1, scatter=2, pie=3')
   datatype = input("Choose Graph Type: ")
   if datatype == "0":
     title = input("Title Of Graph: ")
@@ -125,7 +134,6 @@ def chartgen():
     plt.show()
   elif datatype == "2":
     title = input("Title Of Graph: ")
-    title2 = input("Legend Title")
     letters = input('Input 4 Titles: ')
     letters2 = input("Input 3 More Titles:")
     letters3 = input("Input 2 More Titles:")
@@ -136,23 +144,35 @@ def chartgen():
     numbers4 = input("Input 1 More Values: ")
     arr = [letters, letters2, letters3, letters4]
     numbersarr = [numbers, numbers2, numbers3, numbers4]
-    N = 45
-    x, y = np.random.rand(2, N)
-    c = np.random.randint(1, 5, size=N)
-    s = np.random.randint(10, 220, size=N)
-    fig, ax = plt.subplots()
-    scatter = ax.scatter(arr,numbersarr, c=c, s=s)
-    # produce a legend with the unique colors from the scatter
-    legend1 = ax.legend(*scatter.legend_elements(),
-                        loc="lower left", title=title)
-    ax.add_artist(legend1)
-
-    # produce a legend with a cross section of sizes from the scatter
-    handles, labels = scatter.legend_elements(prop="sizes", alpha=0.6)
-    legend2 = ax.legend(handles, labels, loc="upper right", title=title2)
-
+    x = np.arange(0, math.pi * 2, 0.05)
+    y = np.sin(x)
+    plt.scatter(arr,numbersarr)
+    plt.xlabel(arr)
+    plt.ylabel(numbersarr)
+    plt.title(title)
+    plt.show()
+  elif datatype == "3":
+    title = input("Title Of Graph: ")
+    letters = input('Input 4 Titles: ')
+    letters2 = input("Input 3 More Titles:")
+    letters3 = input("Input 2 More Titles:")
+    letters4 = input("Input 1 More Title:")
+    numbers = input("Input 4 Values: ")
+    numbers2 = input("Input 3 More Values: ")
+    numbers3 = input("Input 2 More Values: ")
+    numbers4 = input("Input 1 More Values: ")
+    arr = [letters, letters2, letters3, letters4]
+    numbersarr = [numbers, numbers2, numbers3, numbers4]
+    fig = plt.figure()
+    ax = fig.add_axes([0, 0, 1, 1])
+    ax.axis('equal')
+    langs = ['C', 'C++', 'Java', 'Python', 'PHP']
+    students = [23, 17, 35, 29, 12]
+    ax.pie(numbersarr, labels=arr, autopct='%1.2f%%')
+    plt.title(title)
     plt.show()
 
+    plt.show()
 while True:
   command = input(wi + sys + '-User: ')
   if command == './chartgen':
@@ -163,6 +183,8 @@ while True:
     update()
   elif command == "./chartgen -c -s":
     chartgen()
+  elif command == "./chartgen -c -r -s":
+    random()
   else:
     print(Fore.RED + '''
             ___  __   __   __    __           
