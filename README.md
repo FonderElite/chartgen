@@ -1,4 +1,4 @@
-# Hasher
+# Chart-Gen
 ## Coded By FonderElite
 <pre>
  ______   __  __     ______     __  __     ______     ______     ______  
