@@ -43,15 +43,111 @@ def banner():
  ░███         ░███ ░███ ░███  ███ ░███ ░███  ███░░███  ░███       ░███ ███
  █████        ░░███████ ░░██████  ████ █████░░████████ █████      ░░█████ 
 ░░░░░          ░░░░░███  ░░░░░░  ░░░░ ░░░░░  ░░░░░░░░ ░░░░░        ░░░░░  
-               ███ ░███                                                                               
+               ███ ░███                                                                 
     ''')
+    print(wi + rd + "Tool that can generate charts, using the module matplotlib")
 
 def random():
   print(wi + yl + 'Bar=0, Line=1, scatter=2, pie=3')
   commandhere = input("Choose Graph Type: ")
-  if commandhere == "0":
-    print('')
+  if commandhere == "1":
+    title = input("Title Of Graph: ")
+    label1 = input("Input 2 Titles: ")
+    label2 = input("Input 1 More Title: ")
+    plt.style.use('dark_background')
+    fig, ax = plt.subplots()
+    L = 6
+    x = np.linspace(0, L)
+    ncolors = len(plt.rcParams['axes.prop_cycle'])
+    shift = np.linspace(0, L, ncolors, endpoint=False)
+    for s in shift:
+      ax.plot(x, np.sin(x + s), 'o-')
+    ax.set_xlabel(label1)
+    ax.set_ylabel(label2)
+    ax.set_title(title)
 
+    plt.show()
+  elif commandhere == "0":
+    title1 = input("Input Title For stepfilled Graph: ")
+    title2 = input("Input Title For step Graph: ")
+    title3 = input("Input Title For barstacked Graph: ")
+    title4 = input("Input Title For unequal bins Graph: ")
+    np.random.seed(19680801)
+
+    mu_x = 200
+    sigma_x = 25
+    x = np.random.normal(mu_x, sigma_x, size=100)
+
+    mu_w = 200
+    sigma_w = 10
+    w = np.random.normal(mu_w, sigma_w, size=100)
+
+    fig, axs = plt.subplots(nrows=2, ncols=2)
+
+    axs[0, 0].hist(x, 20, density=True, histtype='stepfilled', facecolor='g',
+                   alpha=0.75)
+    axs[0, 0].set_title(title1)
+
+    axs[0, 1].hist(x, 20, density=True, histtype='step', facecolor='g',
+                   alpha=0.75)
+    axs[0, 1].set_title(title2)
+
+    axs[1, 0].hist(x, density=True, histtype='barstacked', rwidth=0.8)
+    axs[1, 0].hist(w, density=True, histtype='barstacked', rwidth=0.8)
+    axs[1, 0].set_title(title3)
+
+    # Create a histogram by providing the bin edges (unequally spaced).
+    bins = [100, 150, 180, 195, 205, 220, 250, 300]
+    axs[1, 1].hist(x, bins, density=True, histtype='bar', rwidth=0.8)
+    axs[1, 1].set_title(title4)
+
+    fig.tight_layout()
+    plt.show()
+  elif commandhere == "2":
+    np.random.seed(19680801)
+    fig, ax = plt.subplots()
+    for color in ['tab:blue', 'tab:orange', 'tab:green']:
+      n = 750
+      x, y = np.random.rand(2, n)
+      scale = 200.0 * np.random.rand(n)
+      ax.scatter(x, y, c=color, s=scale, label=color,
+                 alpha=0.3, edgecolors='none')
+
+    ax.legend()
+    ax.grid(True)
+
+    plt.show()
+  elif commandhere == "3":
+    fig, ax = plt.subplots(figsize=(6, 3), subplot_kw=dict(aspect="equal"))
+
+    recipe = ["225 g flour",
+              "90 g sugar",
+              "1 egg",
+              "60 g butter",
+              "100 ml milk",
+              "1/2 package of yeast"]
+
+    data = [225, 90, 50, 60, 100, 5]
+
+    wedges, texts = ax.pie(data, wedgeprops=dict(width=0.5), startangle=-40)
+
+    bbox_props = dict(boxstyle="square,pad=0.3", fc="w", ec="k", lw=0.72)
+    kw = dict(arrowprops=dict(arrowstyle="-"),
+              bbox=bbox_props, zorder=0, va="center")
+
+    for i, p in enumerate(wedges):
+      ang = (p.theta2 - p.theta1) / 2. + p.theta1
+      y = np.sin(np.deg2rad(ang))
+      x = np.cos(np.deg2rad(ang))
+      horizontalalignment = {-1: "right", 1: "left"}[int(np.sign(x))]
+      connectionstyle = "angle,angleA=0,angleB={}".format(ang)
+      kw["arrowprops"].update({"connectionstyle": connectionstyle})
+      ax.annotate(recipe[i], xy=(x, y), xytext=(1.35 * np.sign(x), 1.4 * y),
+                  horizontalalignment=horizontalalignment, **kw)
+
+    ax.set_title("Matplotlib bakery: A donut")
+
+    plt.show()
 def update():
   url = 'https://github.com/FonderElite/chartgen'
   r = requests.get(url)
@@ -172,7 +268,6 @@ def chartgen():
     plt.title(title)
     plt.show()
 
-    plt.show()
 while True:
   command = input(wi + sys + '-User: ')
   if command == './chartgen':
@@ -190,7 +285,7 @@ while True:
             ___  __   __   __    __           
            |__  |__) |__) /  \ |__)      
            |___ |  \ |  \ \__/ |  \      ''')
-  print(Fore.BLUE + '''
+    print(Fore.BLUE + '''
                       __n__n__
                .------`-/00/-'
               /  ##  ## (oo)   Woops.
